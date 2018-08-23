@@ -1,0 +1,10 @@
+require: rubocop-rspec
+
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  TargetRubyVersion: 2.3.3
+  TargetRailsVersion: 4.2
+  Include:
+    - '**/Rakefile'
+    - '**/*.rb'
