@@ -26,6 +26,7 @@ describe Wowza::SecureToken::Params do
 
     it { is_expected.to eql(expected) }
   end
+
   describe '#to_hash' do
     subject { described_class.new(params).to_hash }
 
