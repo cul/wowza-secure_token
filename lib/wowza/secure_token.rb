@@ -7,14 +7,25 @@ module Wowza
   # docs TBD
   module SecureToken
     require 'wowza/secure_token/version'
-    # docs TBD
+    # Wraps a params hash in the sorting and hashing logic necessary
+    # to generate a Wowza secure token
     class Params
       attr_accessor :params
 
+      # Create the wrapper
+      # required symbol keys for:
+      # - starttime (Integer)
+      # - endtime (Integer)
+      # - url
+      # - client_ip
+      # - secret
+      # - prefix
+      # @param params [Hash] parameters to be tokenized
       def initialize(params = {})
         @params = params
       end
 
+      # @return the sorted token string for the wrapped params
       def to_token
         key_params = localize_params.sort
         key_params =
@@ -24,6 +35,8 @@ module Wowza
         "#{path}?#{query_string}"
       end
 
+      # @param digest_alg the digest algorithm to be used to hash the params
+      # @return a URL-safe B64 encoded hash
       def to_hash(digest_alg = Digest::SHA256)
         Base64.urlsafe_encode64(digest_alg.digest(to_token))
       end
