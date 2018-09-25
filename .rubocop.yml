@@ -8,3 +8,29 @@ AllCops:
   Include:
     - '**/Rakefile'
     - '**/*.rb'
+
+Layout/BlockEndNewline:
+  Exclude:
+    - 'spec/**/*'
+
+Layout/MultilineBlockLayout:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/BlockLength:
+  ExcludedMethods: ['describe', 'context']
+
+Style/BlockDelimiters:
+  EnforcedStyle: braces_for_chaining
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/MethodLength:
+  Max: 20
+
+RSpec/ExampleLength:
+  Enabled: false
+
+Style/LineEndConcatenation:
+  Enabled: false

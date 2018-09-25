@@ -18,88 +18,108 @@ describe Wowza::SecureToken::Params do
   end
 
   describe '#to_token' do
-    subject { described_class.new(params).to_token }
+    subject(:token) { described_class.new(params).to_token }
+
     let(:expected) do
       'application-name/_definst_/mp4:media/sample.mp4?192.168.1.2&mySharedSecret' +
-      '&myTokenPrefixCustomParameter=abcdef' +
-      '&myTokenPrefixendtime=1537827043' +
-      '&myTokenPrefixplayduration=10000' +
-      '&myTokenPrefixplaystart=15000' +
-      '&myTokenPrefixstarttime=1537825243' +
-      ''
+        '&myTokenPrefixCustomParameter=abcdef' +
+        '&myTokenPrefixendtime=1537827043' +
+        '&myTokenPrefixplayduration=10000' +
+        '&myTokenPrefixplaystart=15000' +
+        '&myTokenPrefixstarttime=1537825243'
     end
 
-    it { is_expected.to eql(expected) }
+    it { expect(token).to eql(expected) }
   end
 
   describe '#to_token_hash' do
-    subject { described_class.new(params).to_token_hash }
+    subject(:token_hash) { described_class.new(params).to_token_hash }
+
     let(:expected) { 'qDC6giAR_0OTOP5_LuzuaHfiZP1Nb3xulvf2Axr-R2A=' }
 
-    it { is_expected.to eql(expected) }
+    it { expect(token_hash).to eql(expected) }
   end
 
   describe '#to_url_with_token_hash' do
-    subject { described_class.new(params).to_url_with_token_hash(host, port, stream_type) }
+    subject(:url_with_token_hash) { described_class.new(params).to_url_with_token_hash(host, port, stream_type) }
+
     let(:host) { 'wowza.example.com' }
-    let(:port) { 12345 }
-    context "hls" do
+    let(:port) { 12_345 }
+
+    context 'when stream_type is hls' do
       let(:stream_type) { 'hls' }
-      it { is_expected.to eql(
+
+      it { expect(url_with_token_hash).to eql(
         'http://wowza.example.com:12345/application-name/' +
         '_definst_/mp4:media/sample.mp4/playlist.m3u8?' +
         'myTokenPrefixCustomParameter=abcdef' +
-        '&myTokenPrefixendtime=1537827043&myTokenPrefixplayduration=10000&myTokenPrefixplaystart=15000&myTokenPrefixstarttime=1537825243' +
+        '&myTokenPrefixendtime=1537827043&myTokenPrefixplayduration=10000' +
+        '&myTokenPrefixplaystart=15000&myTokenPrefixstarttime=1537825243' +
         '&myTokenPrefixhash=qDC6giAR_0OTOP5_LuzuaHfiZP1Nb3xulvf2Axr-R2A='
       ) }
     end
-    context "hls-ssl" do
+
+    context 'when stream_type is hls-ssl' do
       let(:stream_type) { 'hls-ssl' }
-      it { is_expected.to eql(
+
+      it { expect(url_with_token_hash).to eql(
         'https://wowza.example.com:12345/application-name/' +
         '_definst_/mp4:media/sample.mp4/playlist.m3u8?' +
         'myTokenPrefixCustomParameter=abcdef' +
-        '&myTokenPrefixendtime=1537827043&myTokenPrefixplayduration=10000&myTokenPrefixplaystart=15000&myTokenPrefixstarttime=1537825243' +
+        '&myTokenPrefixendtime=1537827043&myTokenPrefixplayduration=10000' +
+        '&myTokenPrefixplaystart=15000&myTokenPrefixstarttime=1537825243' +
         '&myTokenPrefixhash=qDC6giAR_0OTOP5_LuzuaHfiZP1Nb3xulvf2Axr-R2A='
       ) }
     end
-    context "mpeg-dash" do
+
+    context 'when stream_type is mpeg-dash' do
       let(:stream_type) { 'mpeg-dash' }
-      it { is_expected.to eql(
+
+      it { expect(url_with_token_hash).to eql(
         'http://wowza.example.com:12345/application-name/' +
         '_definst_/mp4:media/sample.mp4/manifest.mpd?' +
         'myTokenPrefixCustomParameter=abcdef' +
-        '&myTokenPrefixendtime=1537827043&myTokenPrefixplayduration=10000&myTokenPrefixplaystart=15000&myTokenPrefixstarttime=1537825243' +
+        '&myTokenPrefixendtime=1537827043&myTokenPrefixplayduration=10000&' +
+        'myTokenPrefixplaystart=15000&myTokenPrefixstarttime=1537825243' +
         '&myTokenPrefixhash=qDC6giAR_0OTOP5_LuzuaHfiZP1Nb3xulvf2Axr-R2A='
       ) }
     end
-    context "mpeg-dash-ssl" do
+
+    context 'when stream_type is mpeg-dash-ssl' do
       let(:stream_type) { 'mpeg-dash-ssl' }
-      it { is_expected.to eql(
+
+      it { expect(url_with_token_hash).to eql(
         'https://wowza.example.com:12345/application-name/' +
         '_definst_/mp4:media/sample.mp4/manifest.mpd?' +
         'myTokenPrefixCustomParameter=abcdef' +
-        '&myTokenPrefixendtime=1537827043&myTokenPrefixplayduration=10000&myTokenPrefixplaystart=15000&myTokenPrefixstarttime=1537825243' +
+        '&myTokenPrefixendtime=1537827043&myTokenPrefixplayduration=10000&' +
+        'myTokenPrefixplaystart=15000&myTokenPrefixstarttime=1537825243' +
         '&myTokenPrefixhash=qDC6giAR_0OTOP5_LuzuaHfiZP1Nb3xulvf2Axr-R2A='
       ) }
     end
-    context "rtmp" do
+
+    context 'when stream_type is rtmp' do
       let(:stream_type) { 'rtmp' }
-      it { is_expected.to eql(
+
+      it { expect(url_with_token_hash).to eql(
         'rtmp://wowza.example.com:12345/application-name/' +
         '_definst_/mp4:media/sample.mp4?' +
         'myTokenPrefixCustomParameter=abcdef' +
-        '&myTokenPrefixendtime=1537827043&myTokenPrefixplayduration=10000&myTokenPrefixplaystart=15000&myTokenPrefixstarttime=1537825243' +
+        '&myTokenPrefixendtime=1537827043&myTokenPrefixplayduration=10000' +
+        '&myTokenPrefixplaystart=15000&myTokenPrefixstarttime=1537825243' +
         '&myTokenPrefixhash=qDC6giAR_0OTOP5_LuzuaHfiZP1Nb3xulvf2Axr-R2A='
       ) }
     end
-    context "rtmps" do
+
+    context 'when stream_type is rtmps' do
       let(:stream_type) { 'rtmps' }
-      it { is_expected.to eql(
+
+      it { expect(url_with_token_hash).to eql(
         'rtmps://wowza.example.com:12345/application-name/' +
         '_definst_/mp4:media/sample.mp4?' +
         'myTokenPrefixCustomParameter=abcdef' +
-        '&myTokenPrefixendtime=1537827043&myTokenPrefixplayduration=10000&myTokenPrefixplaystart=15000&myTokenPrefixstarttime=1537825243' +
+        '&myTokenPrefixendtime=1537827043&myTokenPrefixplayduration=10000' +
+        '&myTokenPrefixplaystart=15000&myTokenPrefixstarttime=1537825243' +
         '&myTokenPrefixhash=qDC6giAR_0OTOP5_LuzuaHfiZP1Nb3xulvf2Axr-R2A='
       ) }
     end

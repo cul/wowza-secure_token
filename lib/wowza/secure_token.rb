@@ -31,7 +31,9 @@ module Wowza
 
       # @return the sorted token string for the wrapped params
       def to_token
-        query_string = params_to_sorted_query_string(prefix_params(@params).merge(@client_ip => nil, @secret => nil))
+        query_string = params_to_sorted_query_string(
+          prefix_params(@params).merge(@client_ip => nil, @secret => nil)
+        )
         "#{@stream}?#{query_string}"
       end
 
@@ -45,11 +47,13 @@ module Wowza
         query_string = params_to_sorted_query_string(prefix_params(@params))
         case stream_type
         when 'hls', 'hls-ssl'
-          (stream_type == 'hls' ? 'http' : 'https') + "://#{host}:#{port}/#{@stream}/playlist.m3u8?#{query_string}&#{@prefix}hash=#{self.to_token_hash}"
+          (stream_type == 'hls' ? 'http' : 'https') +
+            "://#{host}:#{port}/#{@stream}/playlist.m3u8?#{query_string}&#{@prefix}hash=#{to_token_hash}"
         when 'mpeg-dash', 'mpeg-dash-ssl'
-          (stream_type == 'mpeg-dash' ? 'http' : 'https') + "://#{host}:#{port}/#{@stream}/manifest.mpd?#{query_string}&#{@prefix}hash=#{self.to_token_hash}"
+          (stream_type == 'mpeg-dash' ? 'http' : 'https') +
+            "://#{host}:#{port}/#{@stream}/manifest.mpd?#{query_string}&#{@prefix}hash=#{to_token_hash}"
         when 'rtmp', 'rtmps'
-          "#{stream_type}://#{host}:#{port}/#{@stream}?#{query_string}&#{@prefix}hash=#{self.to_token_hash}"
+          "#{stream_type}://#{host}:#{port}/#{@stream}?#{query_string}&#{@prefix}hash=#{to_token_hash}"
         else
           raise "Unsupported stream_type: #{stream_type}"
         end
