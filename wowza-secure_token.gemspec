@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.summary       = 'Generate secure token prefix for wowza requests.'
   s.description   = 'Generate secure token prefix for wowza requests'\
                     ' and allow configurable defaults (e.g., secret).'
-  s.authors       = ['Ben Armintor']
+  s.authors       = ['Ben Armintor', "Eric O'Hanlon"]
   s.email         = 'armintor@gmail.com'
   s.homepage      = 'https://github.com/cul/wowza-secure_token'
   s.license       = 'APACHE2'
